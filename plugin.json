@@ -12,5 +12,12 @@
   "sourceUrl": "https://github.com/thement/camouflage",
   "donateUrl": "",
   "changelogUrl": "",
-  "modules": []
+  "modules": [
+    {
+      "slug": "FakeTapeDelay",
+      "name": "FakeTapeDelay",
+      "description": "",
+      "tags": []
+    }
+  ]
 }
