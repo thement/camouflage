@@ -96,12 +96,13 @@ struct FakeTapeDelay : Module {
         float rpf = rp - irp;
         float delayed_signal = (1.f - rpf) * delay_buffer[rp] + rpf * delay_buffer[irp1];
 
+        outputs[SEND_OUTPUT].setVoltage(delayed_signal);
+        if (inputs[RETURN_INPUT].isConnected()) {
+            delayed_signal = inputs[RETURN_INPUT].getVoltage();
+        }
+
         // Create delay-line input mix
         float delay_line_input_mix = input_signal + feedback * delayed_signal;
-        outputs[SEND_OUTPUT].setVoltage(delay_line_input_mix);
-        if (inputs[RETURN_INPUT].isConnected()) {
-            delay_line_input_mix = inputs[RETURN_INPUT].getVoltage();
-        }
 
         // Write to a delay-line (if neccessary)
         float new_tp = tp + playback_speed;
