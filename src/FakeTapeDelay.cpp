@@ -6,14 +6,14 @@
 
 struct FakeTapeDelay : Module {
     enum ParamId {
-        TIME_PARAM,
+        SPEED_PARAM,
         FEEDBACK_PARAM,
-        TIME_CV_PARAM,
+        SPEED_CV_PARAM,
         PARAMS_LEN
     };
     enum InputId {
         IN_INPUT,
-        TIME_INPUT,
+        SPEED_INPUT,
         RETURN_INPUT,
         INPUTS_LEN
     };
@@ -34,12 +34,12 @@ struct FakeTapeDelay : Module {
 
     FakeTapeDelay() {
         config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
-        configParam(TIME_PARAM, DELAY_PARAM_MIN, DELAY_PARAM_MAX, DELAY_PARAM_DEFAULT, "Playback Speed");
+        configParam(SPEED_PARAM, DELAY_PARAM_MIN, DELAY_PARAM_MAX, DELAY_PARAM_DEFAULT, "Playback Speed");
         configParam(FEEDBACK_PARAM, 0.f, 1.f, 0.7f, "Feedback");
-        configParam(TIME_CV_PARAM, 0.f, 1.f, 1.f, "Time Input CV");
+        configParam(SPEED_CV_PARAM, 0.f, 1.f, 1.f, "Speed Input CV");
         configInput(IN_INPUT, "Sound Input");
         configInput(RETURN_INPUT, "Insert Return Input");
-        configInput(TIME_INPUT, "Playback Speed Input");
+        configInput(SPEED_INPUT, "Playback Speed Input");
         configOutput(OUT_OUTPUT, "Delay Output");
         configOutput(SEND_OUTPUT, "Insert Send Output");
 
@@ -78,9 +78,9 @@ struct FakeTapeDelay : Module {
 
 
     void process(const ProcessArgs &args) override {
-        float playback_speed = params[TIME_PARAM].getValue();
-        if (inputs[TIME_INPUT].isConnected()) {
-            playback_speed += inputs[TIME_INPUT].getVoltage() * params[TIME_CV_PARAM].getValue() / 10.f;
+        float playback_speed = params[SPEED_PARAM].getValue();
+        if (inputs[SPEED_INPUT].isConnected()) {
+            playback_speed += inputs[SPEED_INPUT].getVoltage() * params[SPEED_CV_PARAM].getValue() / 10.f;
             playback_speed = clamp(playback_speed, DELAY_PARAM_MIN, DELAY_PARAM_MAX);
         }
 
@@ -160,11 +160,11 @@ struct FakeTapeDelayWidget : ModuleWidget {
         addChild(createWidget<ScrewSilver>(Vec(RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
         addChild(createWidget<ScrewSilver>(Vec(box.size.x - 2 * RACK_GRID_WIDTH, RACK_GRID_HEIGHT - RACK_GRID_WIDTH)));
 
-        addParam(createParamCentered<RoundHugeBlackKnob>(mm2px(Vec(15.199, 29.989)), module, FakeTapeDelay::TIME_PARAM));
+        addParam(createParamCentered<RoundHugeBlackKnob>(mm2px(Vec(15.199, 29.989)), module, FakeTapeDelay::SPEED_PARAM));
         addParam(createParamCentered<RoundLargeBlackKnob>(mm2px(Vec(15.247, 51.618)), module, FakeTapeDelay::FEEDBACK_PARAM));
-        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(8.04, 68.226)), module, FakeTapeDelay::TIME_CV_PARAM));
+        addParam(createParamCentered<RoundBlackKnob>(mm2px(Vec(8.04, 68.226)), module, FakeTapeDelay::SPEED_CV_PARAM));
 
-        addInput(createInputCentered<PJ301MPort>(mm2px(Vec(22.425, 68.1)), module, FakeTapeDelay::TIME_INPUT));
+        addInput(createInputCentered<PJ301MPort>(mm2px(Vec(22.425, 68.1)), module, FakeTapeDelay::SPEED_INPUT));
         addInput(createInputCentered<PJ301MPort>(mm2px(Vec(22.333, 88.117)), module, FakeTapeDelay::IN_INPUT));
         addInput(createInputCentered<PJ301MPort>(mm2px(Vec(8.112, 88.396)), module, FakeTapeDelay::RETURN_INPUT));
 
