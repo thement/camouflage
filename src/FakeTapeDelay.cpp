@@ -48,7 +48,6 @@ struct FakeTapeDelay : Module {
 
     void update_delay_buffer() {
         delay_samples = (int)(delay_time_ms / 1000.f * APP->engine->getSampleRate());
-        printf("updating buffer size to %d\n", delay_samples);
         delay_buffer.resize(0, 0.f);
         delay_buffer.resize(delay_samples, 0.f);
         tp = 0;
