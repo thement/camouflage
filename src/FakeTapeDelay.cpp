@@ -93,7 +93,7 @@ struct FakeTapeDelay : Module {
         int irp = (int)rp;
         int irp1 = (irp + 1) % delay_samples;
         float rpf = rp - irp;
-        float delayed_signal = (1.f - rpf) * delay_buffer[rp] + rpf * delay_buffer[irp1];
+        float delayed_signal = (1.f - rpf) * delay_buffer[irp] + rpf * delay_buffer[irp1];
 
         outputs[SEND_OUTPUT].setVoltage(delayed_signal);
         if (inputs[RETURN_INPUT].isConnected()) {
