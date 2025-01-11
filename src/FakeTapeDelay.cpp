@@ -36,12 +36,12 @@ struct FakeTapeDelay : Module {
         config(PARAMS_LEN, INPUTS_LEN, OUTPUTS_LEN, LIGHTS_LEN);
         configParam(SPEED_PARAM, DELAY_PARAM_MIN, DELAY_PARAM_MAX, DELAY_PARAM_DEFAULT, "Playback Speed");
         configParam(FEEDBACK_PARAM, 0.f, 1.f, 0.7f, "Feedback");
-        configParam(SPEED_CV_PARAM, 0.f, 1.f, 1.f, "Speed Input CV");
-        configInput(IN_INPUT, "Sound Input");
-        configInput(RETURN_INPUT, "Insert Return Input");
-        configInput(SPEED_INPUT, "Playback Speed Input");
-        configOutput(OUT_OUTPUT, "Delay Output");
-        configOutput(SEND_OUTPUT, "Insert Send Output");
+        configParam(SPEED_CV_PARAM, 0.f, 1.f, 1.f, "Speed");
+        configInput(IN_INPUT, "Sound");
+        configInput(RETURN_INPUT, "Insert Return");
+        configInput(SPEED_INPUT, "Playback Speed");
+        configOutput(OUT_OUTPUT, "Delay");
+        configOutput(SEND_OUTPUT, "Insert Send");
 
         update_delay_buffer();
     }
