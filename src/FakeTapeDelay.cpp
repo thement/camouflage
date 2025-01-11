@@ -113,7 +113,7 @@ struct FakeTapeDelay : Module {
             delay_buffer[ip % delay_samples] = write_to_buffer;
         }
 
-        outputs[OUT_OUTPUT].setVoltage(delayed_signal);
+        outputs[OUT_OUTPUT].setVoltage(delay_line_input_mix);
         last_delay_line_input_mix = delay_line_input_mix;
         tp = fmodf(new_tp, delay_samples);
     }
