@@ -47,6 +47,48 @@ Turn the delay feedback to maximum, let the sound fill the tape, then change the
 * put bandpass filter with LFO on cutoff as send effect
 
 
-# Author
+**Signal diagram**
+
+```
+IN
+
+ │
+ │
+ ▼
+(+)◄───────┐
+ │         │
+ │        (*)  signal is multiplied by FEEDBACK
+ │         │   before mixed in
+ │         │
+ │       ┌─│─┐
+ │       │ │\◄───    RETURN replaces the output
+ │       └─▲─┘       from delay line if inserted
+ │         │
+ │         │
+ │         ├──────►  SEND
+ │         │
+ │       ┌─┴─┐
+ │       │ d │
+ │       │ e │
+ │       │ l │
+ │       │ a │
+ │       │ y │
+ │       │   │
+ │       │ l │
+ │       │ i │
+ │       │ n │
+ │       │ e │
+ │       └─▲─┘
+ │         │
+ ├─────────┘
+ │
+ │
+ ▼
+
+OUT
+```
+
+
+### Author
 
 Drop me a line at thement at ibawizard dot net for inquiries, suggestion, or if you just want to chat.
