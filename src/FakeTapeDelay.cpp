@@ -28,7 +28,7 @@ struct FakeTapeDelay : Module {
 
     std::vector<float> delay_buffer;
     float tp = 0;
-    float last_delay_line_input_mix = 0;
+    float last_filtered_delay_line_input_mix = 0;
     float delay_time_ms = 100.f;
     int delay_samples = 4800;
 
@@ -85,7 +85,6 @@ struct FakeTapeDelay : Module {
 
         float feedback = params[FEEDBACK_PARAM].getValue();
         float raw_input_signal = inputs[IN_INPUT].isConnected() ? inputs[IN_INPUT].getVoltage() : 0.f;
-        float input_signal = processFilter(raw_input_signal, args.sampleRate, playback_speed < 1.0 ? playback_speed : 1.0);
 
 
         // Read from the delay line
@@ -101,7 +100,8 @@ struct FakeTapeDelay : Module {
         }
 
         // Create delay-line input mix
-        float delay_line_input_mix = input_signal + feedback * delayed_signal;
+        float delay_line_input_mix = raw_input_signal + feedback * delayed_signal;
+        float filtered_delay_line_input_mix = processFilter(delay_line_input_mix, args.sampleRate, playback_speed < 1.0 ? playback_speed : 1.0);
 
         // Write to a delay-line (if neccessary)
         float new_tp = tp + playback_speed;
@@ -109,12 +109,12 @@ struct FakeTapeDelay : Module {
         int new_itp = (int)new_tp;
         for (int ip = itp + 1; ip <= new_itp; ip++) {
             float p = (ip - tp) / playback_speed;
-            float write_to_buffer = last_delay_line_input_mix * (1 - p) + delay_line_input_mix * p;
+            float write_to_buffer = last_filtered_delay_line_input_mix * (1 - p) + filtered_delay_line_input_mix * p;
             delay_buffer[ip % delay_samples] = write_to_buffer;
         }
 
         outputs[OUT_OUTPUT].setVoltage(delay_line_input_mix);
-        last_delay_line_input_mix = delay_line_input_mix;
+        last_filtered_delay_line_input_mix = filtered_delay_line_input_mix;
         tp = fmodf(new_tp, delay_samples);
     }
 
